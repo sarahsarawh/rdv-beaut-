@@ -1,28 +1,52 @@
 import { useState } from “react”;
 
+const INFO_POSE = “Duree : 1h30 a 2h. Venez demaquillee, sans mascara ni huile sur les cils.”;
+const INFO_REMPL = “Duree : 1h a 1h30 selon le remplissage. Venez demaquillee, sans mascara ni huile sur les cils.”;
+const INFO_SOURCIL = “Venez sans maquillage sur les sourcils pour un resultat optimal.”;
+const INFO_REHAUSSE = “Duree : 1h a 1h15. Venez sans mascara ni produit sur les cils.”;
+const INFO_DEPOSE = “Duree : 30 min. Depose douce des extensions posees en institut exterieur.”;
+const INFO_TEINTURE = “Duree : 20-30 min. Venez sans maquillage sur la zone.”;
+
 const services = [
-{
-category: “Epilation”,
-emoji: “✨”,
-items: [
-{ id: “e1”, name: “Epilation sourcils”, duration: “15 min”, price: “12€” },
-{ id: “e2”, name: “Epilation levre superieure”, duration: “10 min”, price: “8€” },
-{ id: “e3”, name: “Epilation aisselles”, duration: “20 min”, price: “15€” },
-{ id: “e4”, name: “Epilation jambes completes”, duration: “45 min”, price: “38€” },
-{ id: “e5”, name: “Epilation maillot classique”, duration: “20 min”, price: “18€” },
-{ id: “e6”, name: “Epilation maillot integral”, duration: “30 min”, price: “28€” },
-{ id: “e7”, name: “Epilation bras complets”, duration: “30 min”, price: “25€” },
-],
-},
 {
 category: “Cils”,
 emoji: “🪄”,
 items: [
-{ id: “c1”, name: “Extensions cils — Volume Naturel”, duration: “1h30”, price: “65€” },
-{ id: “c2”, name: “Extensions cils — Volume Russe”, duration: “2h”, price: “85€” },
-{ id: “c3”, name: “Retouche extensions (3 sem)”, duration: “1h”, price: “40€” },
-{ id: “c4”, name: “Rehaussement cils + teinture”, duration: “1h”, price: “55€” },
-{ id: “c5”, name: “Depose extensions”, duration: “30 min”, price: “20€” },
+{ id: “c1”, name: “Pose cil a cil”, price: “70€”, info: INFO_POSE },
+{ id: “c2”, name: “Remplissage cil a cil”, price: “55€”, info: INFO_REMPL },
+{ id: “c3”, name: “Pose mixte 3D/4D/5D”, price: “80€”, info: INFO_POSE },
+{ id: “c4”, name: “Remplissage mixte”, price: “65€”, info: INFO_REMPL },
+{ id: “c5”, name: “Pose mega cil a cil”, price: “80€”, info: INFO_POSE },
+{ id: “c6”, name: “Remplissage mega”, price: “65€”, info: INFO_REMPL },
+{ id: “c7”, name: “Volume Russe (8D et +)”, price: “90€”, info: INFO_POSE },
+{ id: “c8”, name: “Remplissage Volume Russe”, price: “75€”, info: INFO_REMPL },
+{ id: “c9”, name: “Mega Volume Russe”, price: “100€”, info: INFO_POSE },
+{ id: “c10”, name: “Remplissage Mega Volume”, price: “85€”, info: INFO_REMPL },
+{ id: “c11”, name: “Anime Lashes Classic”, price: “80€”, info: INFO_POSE },
+{ id: “c12”, name: “Remplissage Anime Classic”, price: “70€”, info: INFO_REMPL },
+{ id: “c13”, name: “Mega Anime Lashes”, price: “100€”, info: INFO_POSE },
+{ id: “c14”, name: “Remplissage Mega Anime”, price: “80€”, info: INFO_REMPL },
+{ id: “c15”, name: “Depose cils pose exterieur”, price: “20€”, info: INFO_DEPOSE },
+],
+},
+{
+category: “Sourcils”,
+emoji: “✨”,
+items: [
+{ id: “s1”, name: “Browlift”, price: “50€”, info: INFO_REHAUSSE },
+{ id: “s2”, name: “Browlift + Epilation”, price: “65€”, info: INFO_SOURCIL },
+{ id: “s3”, name: “Browlift + Teinture”, price: “70€”, info: INFO_SOURCIL },
+{ id: “s4”, name: “Teinture sourcils”, price: “25€”, info: INFO_TEINTURE },
+{ id: “s5”, name: “Epilation au fil sourcils”, price: “20€”, info: INFO_SOURCIL },
+],
+},
+{
+category: “Rehaussement de cils”,
+emoji: “🌸”,
+items: [
+{ id: “r1”, name: “Rehaussement”, price: “50€”, info: INFO_REHAUSSE },
+{ id: “r2”, name: “Rehaussement + Teinture”, price: “65€”, info: INFO_REHAUSSE },
+{ id: “r3”, name: “Teinture cils”, price: “20€”, info: INFO_TEINTURE },
 ],
 },
 ];
@@ -45,7 +69,7 @@ const unavailable = {
 “2026-05-06”: [“11:00”,“15:00”,“16:00”],
 };
 
-const css = `@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap'); *{box-sizing:border-box;margin:0;padding:0} body{background:linear-gradient(145deg,#fff5f7 0%,#fce8ef 40%,#f9d6e4 100%);min-height:100vh} .sans{font-family:'Jost',sans-serif} .btn-rose{background:linear-gradient(135deg,#d4688a,#c0506e);color:white;border:none;border-radius:50px;padding:14px 36px;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 20px rgba(192,80,110,0.3)} .btn-rose:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(192,80,110,0.4)} .btn-rose:disabled{opacity:0.4;cursor:not-allowed;transform:none} .btn-ghost{background:transparent;border:1.5px solid rgba(192,80,110,0.35);color:#c0506e;border-radius:50px;padding:10px 24px;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s} .btn-ghost:hover{background:rgba(192,80,110,0.07)} .card{background:rgba(255,255,255,0.75);backdrop-filter:blur(12px);border:1px solid rgba(219,112,147,0.15);border-radius:20px;transition:all 0.2s;cursor:pointer} .card:hover{border-color:rgba(219,112,147,0.4);box-shadow:0 8px 32px rgba(192,80,110,0.1)} .card.selected{border-color:#d4688a!important;background:rgba(255,235,242,0.85)!important;box-shadow:0 6px 24px rgba(192,80,110,0.18)!important} .input-field{width:100%;padding:13px 16px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(219,112,147,0.2);border-radius:12px;font-family:'Jost',sans-serif;font-size:14px;color:#2a1520;outline:none;transition:border-color 0.2s} .input-field:focus{border-color:#d4688a} .step-dot{width:8px;height:8px;border-radius:50%;background:rgba(192,80,110,0.2);transition:all 0.3s;display:inline-block} .step-dot.active{background:#d4688a;width:24px;border-radius:4px} .step-dot.done{background:rgba(192,80,110,0.5)} .time-chip{padding:9px 16px;border-radius:50px;border:1.5px solid rgba(219,112,147,0.25);background:rgba(255,255,255,0.7);font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;color:#2a1520} .time-chip:hover{border-color:#d4688a;background:rgba(255,235,242,0.8)} .time-chip.sel{background:linear-gradient(135deg,#d4688a,#c0506e);color:white;border-color:transparent} .time-chip.blocked{opacity:0.3;cursor:not-allowed;text-decoration:line-through} .cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all 0.18s;border:1.5px solid transparent} .cal-day:hover{background:rgba(212,104,138,0.12);border-color:rgba(212,104,138,0.3)} .cal-day.dis{opacity:0.25;cursor:not-allowed;pointer-events:none} .cal-day.sel{background:linear-gradient(135deg,#d4688a,#c0506e);color:white} .cal-day.tod{border-color:#d4688a;color:#d4688a;font-weight:600} textarea.input-field{resize:vertical;min-height:80px}`;
+const css = `@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Nunito:wght@700;800;900&display=swap'); *{box-sizing:border-box;margin:0;padding:0} body{background:linear-gradient(145deg,#fff5f7 0%,#fce8ef 40%,#f9d6e4 100%);min-height:100vh} .sans{font-family:'Jost',sans-serif} .btn-rose{background:linear-gradient(135deg,#d4688a,#c0506e);color:white;border:none;border-radius:50px;padding:14px 36px;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 20px rgba(192,80,110,0.3)} .btn-rose:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(192,80,110,0.4)} .btn-rose:disabled{opacity:0.4;cursor:not-allowed;transform:none} .btn-ghost{background:transparent;border:1.5px solid rgba(192,80,110,0.35);color:#c0506e;border-radius:50px;padding:10px 24px;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s} .btn-ghost:hover{background:rgba(192,80,110,0.07)} .card{background:rgba(255,255,255,0.75);backdrop-filter:blur(12px);border:1px solid rgba(219,112,147,0.15);border-radius:20px;transition:all 0.2s;cursor:pointer} .card:hover{border-color:rgba(219,112,147,0.4);box-shadow:0 8px 32px rgba(192,80,110,0.1)} .card.selected{border-color:#d4688a!important;background:rgba(255,235,242,0.85)!important;box-shadow:0 6px 24px rgba(192,80,110,0.18)!important} .input-field{width:100%;padding:13px 16px;background:rgba(255,255,255,0.8);border:1.5px solid rgba(219,112,147,0.2);border-radius:12px;font-family:'Jost',sans-serif;font-size:14px;color:#2a1520;outline:none;transition:border-color 0.2s} .input-field:focus{border-color:#d4688a} .step-dot{width:8px;height:8px;border-radius:50%;background:rgba(192,80,110,0.2);transition:all 0.3s;display:inline-block} .step-dot.active{background:#d4688a;width:24px;border-radius:4px} .step-dot.done{background:rgba(192,80,110,0.5)} .time-chip{padding:9px 16px;border-radius:50px;border:1.5px solid rgba(219,112,147,0.25);background:rgba(255,255,255,0.7);font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s;color:#2a1520} .time-chip:hover{border-color:#d4688a;background:rgba(255,235,242,0.8)} .time-chip.sel{background:linear-gradient(135deg,#d4688a,#c0506e);color:white;border-color:transparent} .time-chip.blocked{opacity:0.3;cursor:not-allowed;text-decoration:line-through} .cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all 0.18s;border:1.5px solid transparent} .cal-day:hover{background:rgba(212,104,138,0.12);border-color:rgba(212,104,138,0.3)} .cal-day.dis{opacity:0.25;cursor:not-allowed;pointer-events:none} .cal-day.sel{background:linear-gradient(135deg,#d4688a,#c0506e);color:white} .cal-day.tod{border-color:#d4688a;color:#d4688a;font-weight:600} textarea.input-field{resize:vertical;min-height:80px} .info-box{background:rgba(212,104,138,0.08);border:1px solid rgba(212,104,138,0.25);border-radius:12px;padding:12px 16px;font-family:'Jost',sans-serif;font-size:12px;color:#a06070;line-height:1.6;margin-top:8px;animation:fadeIn 0.2s ease} .notice{background:rgba(212,104,138,0.08);border:1px solid rgba(212,104,138,0.2);border-radius:12px;padding:12px 16px;font-family:'Jost',sans-serif;font-size:12px;color:#a06070;text-align:center;line-height:1.6;margin-top:16px} .logo-text{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(36px,10vw,52px);color:#c9788e;letter-spacing:-1px;line-height:1} .logo-dot{color:#c9788e} .logo-sub{font-family:'Jost',sans-serif;font-weight:300;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#d4a0b0;margin-top:2px} @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}`;
 
 export default function App() {
 const [step, setStep] = useState(1);
@@ -89,34 +113,20 @@ setSelectedTime(null);
 setForm({ name: “”, phone: “”, email: “”, note: “” });
 };
 
-const wrap = {
-minHeight: “100vh”,
-fontFamily: “‘Cormorant Garamond’, Georgia, serif”,
-color: “#2a1520”,
-padding: “0”,
-};
-
-const inner = {
-maxWidth: “480px”,
-margin: “0 auto”,
-padding: “24px 16px 40px”,
-};
-
 return (
 <>
 <style>{css}</style>
-<div style={wrap}>
-<div style={inner}>
+<div style={{ minHeight:“100vh”, fontFamily:”‘Cormorant Garamond’, Georgia, serif”, color:”#2a1520” }}>
+<div style={{ maxWidth:“480px”, margin:“0 auto”, padding:“24px 16px 40px” }}>
 
 ```
-      <div style={{ textAlign:"center", marginBottom:"32px", paddingTop:"8px" }}>
-        <div className="sans" style={{ fontSize:"11px", letterSpacing:"3px", textTransform:"uppercase", color:"#c0506e", marginBottom:"8px" }}>
-          Institut Beaute
+      {/* LOGO */}
+      <div style={{ textAlign:"center", marginBottom:"32px", paddingTop:"12px" }}>
+        <div className="logo-text">
+          concept<span className="logo-dot">.</span>
         </div>
-        <h1 style={{ fontSize:"clamp(28px,7vw,36px)", fontWeight:"300", letterSpacing:"1px", lineHeight:"1.1" }}>
-          Prendre <em style={{ fontStyle:"italic", color:"#d4688a" }}>rendez-vous</em>
-        </h1>
-        <div style={{ width:"40px", height:"1px", background:"linear-gradient(90deg,transparent,#d4688a,transparent)", margin:"12px auto 0" }} />
+        <div className="logo-sub">for iconic lashes</div>
+        <div style={{ width:"40px", height:"1px", background:"linear-gradient(90deg,transparent,#d4688a,transparent)", margin:"14px auto 0" }} />
       </div>
 
       {step < 5 && (
@@ -140,22 +150,29 @@ return (
               </div>
               <div style={{ display:"flex", flexDirection:"column", gap:"8px" }}>
                 {cat.items.map(item => (
-                  <div
-                    key={item.id}
-                    className={"card" + (selectedService && selectedService.id===item.id?" selected":"")}
-                    onClick={() => setSelectedService(item)}
-                    style={{ padding:"14px 18px", display:"flex", justifyContent:"space-between", alignItems:"center" }}
-                  >
-                    <div>
-                      <div className="sans" style={{ fontSize:"14px", marginBottom:"2px" }}>{item.name}</div>
-                      <div className="sans" style={{ fontSize:"12px", color:"#a06070" }}>{item.duration}</div>
+                  <div key={item.id}>
+                    <div
+                      className={"card" + (selectedService && selectedService.id===item.id?" selected":"")}
+                      onClick={() => setSelectedService(selectedService && selectedService.id===item.id ? null : item)}
+                      style={{ padding:"14px 18px", display:"flex", justifyContent:"space-between", alignItems:"center" }}
+                    >
+                      <div className="sans" style={{ fontSize:"14px" }}>{item.name}</div>
+                      <div style={{ fontSize:"16px", fontWeight:"500", color:"#d4688a" }}>{item.price}</div>
                     </div>
-                    <div style={{ fontSize:"16px", fontWeight:"500", color:"#d4688a" }}>{item.price}</div>
+                    {selectedService && selectedService.id===item.id && (
+                      <div className="info-box">
+                        ℹ️ {item.info}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
           ))}
+          <div className="notice">
+            Prestations nocturnes disponibles sur demande apres 20h : supplement de 15€.<br/>
+            Les remplissages sont acceptes a partir de 2 semaines et demi.
+          </div>
           <div style={{ textAlign:"center", marginTop:"24px" }}>
             <button className="btn-rose" disabled={!selectedService} onClick={() => setStep(2)}>
               Continuer
@@ -247,9 +264,14 @@ return (
           </p>
           <div className="card" style={{ padding:"16px 20px", marginBottom:"20px", borderLeft:"3px solid #d4688a", cursor:"default" }}>
             <div className="sans" style={{ fontSize:"13px", color:"#5a3040", lineHeight:"1.8" }}>
-              <div>✨ {selectedService && selectedService.name} — {selectedService && selectedService.price}</div>
+              <div>🪄 {selectedService && selectedService.name} — {selectedService && selectedService.price}</div>
               <div>📅 {selectedDate && selectedDate.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})} a {selectedTime}</div>
             </div>
+            {selectedService && (
+              <div style={{ marginTop:"10px", fontSize:"12px", fontFamily:"'Jost',sans-serif", color:"#a06070", lineHeight:"1.5" }}>
+                ℹ️ {selectedService.info}
+              </div>
+            )}
           </div>
           <div style={{ display:"flex", flexDirection:"column", gap:"12px" }}>
             <div>
@@ -266,7 +288,7 @@ return (
             </div>
             <div>
               <label className="sans" style={{ fontSize:"12px", color:"#a06070", display:"block", marginBottom:"6px" }}>Note (optionnel)</label>
-              <textarea className="input-field" placeholder="Ex : peau sensible, premiere fois..." value={form.note} onChange={e => setForm({...form, note:e.target.value})} />
+              <textarea className="input-field" placeholder="Ex : allergies, questions..." value={form.note} onChange={e => setForm({...form, note:e.target.value})} />
             </div>
           </div>
           <div style={{ display:"flex", justifyContent:"space-between", marginTop:"24px" }}>
@@ -292,7 +314,6 @@ return (
             <div className="sans" style={{ fontSize:"13px", color:"#5a3040", lineHeight:"2" }}>
               <div>🪄 {selectedService && selectedService.name}</div>
               <div>📅 {selectedDate && selectedDate.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})} a {selectedTime}</div>
-              <div>⏱ Duree : {selectedService && selectedService.duration}</div>
               <div>💰 Tarif : {selectedService && selectedService.price}</div>
             </div>
           </div>
