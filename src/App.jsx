@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
+import emailjs from "@emailjs/browser";
 
 const SUPABASE_URL = "https://lysqfkxxegzfjnljhszy.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5c3Fma3h4ZWd6ZmpubGpoc3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MTYxMTIsImV4cCI6MjA5Mzk5MjExMn0.KSpnz_DD_kVB5W9OCDQvJ3RoskMEIEJxXdDXX0ZPJNE";
 const ADMIN_PASSWORD = "Bossboss123";
+
+const EMAILJS_SERVICE_ID = "concept4lashes";
+const EMAILJS_TEMPLATE_ID = "v098x81";
+const EMAILJS_PUBLIC_KEY = "eMaOTwoGjGcKN6krF";
 
 async function getReservations(date) {
   const res = await fetch(
@@ -41,7 +46,6 @@ async function addReservation(date, heure, duree) {
 }
 
 async function blockDay(date) {
-  // Bloque toute la journee en ajoutant un RDV de 9h a 20h30 (705 min)
   await fetch(SUPABASE_URL + "/rest/v1/Reservation", {
     method: "POST",
     headers: {
@@ -270,7 +274,6 @@ function AdminPage() {
         </div>
       )}
 
-      {/* Bloquer une journée */}
       <div style={{ background:"white", borderRadius:"20px", padding:"20px", marginBottom:"24px", boxShadow:"0 2px 16px rgba(192,80,110,0.08)" }}>
         <h2 style={{ fontSize:"16px", fontWeight:"600", marginBottom:"16px", color:"#2a1520" }}>🚫 Bloquer une journée</h2>
         <div style={{ display:"flex", gap:"12px", alignItems:"center" }}>
@@ -289,7 +292,6 @@ function AdminPage() {
         <p style={{ fontSize:"11px", color:"#a06070", marginTop:"8px" }}>Bloque toute la journée — congé, vacances, formation...</p>
       </div>
 
-      {/* Liste des RDV */}
       <div style={{ background:"white", borderRadius:"20px", padding:"20px", boxShadow:"0 2px 16px rgba(192,80,110,0.08)" }}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"16px" }}>
           <h2 style={{ fontSize:"16px", fontWeight:"600", color:"#2a1520" }}>📋 Réservations à venir</h2>
@@ -382,19 +384,24 @@ export default function App() {
     if (dateKey && selectedTime) {
       await addReservation(dateKey, selectedTime, dureeService);
     }
-    const data = {
-      name: form.name, phone: form.phone, email: form.email, note: form.note,
-      prestation: selectedService ? selectedService.name + " — " + selectedService.price : "",
-      date: selectedDate ? selectedDate.toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long"}) : "",
-      heure: selectedTime || "",
-    };
     try {
-      await fetch("https://formspree.io/f/mrejgyev", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-    } catch(e) {}
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          client_name: form.name,
+          client_email: form.email,
+          appointment_date: selectedDate
+            ? selectedDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })
+            : "",
+          appointment_time: selectedTime || "",
+          service: selectedService ? selectedService.name + " — " + selectedService.price : "",
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+    } catch(e) {
+      console.error("EmailJS error:", e);
+    }
     setStep(5);
   };
 
@@ -591,8 +598,8 @@ export default function App() {
                 Merci <em style={{ color:"#d4688a" }}>{form.name.split(" ")[0]}</em> !
               </h2>
               <p className="sans" style={{ fontSize:"14px", color:"#7a4555", marginBottom:"24px", lineHeight:"1.6" }}>
-                Votre demande a bien été envoyée.<br/>
-                Je vous confirme par SMS très bientôt.
+                Votre rendez-vous est confirmé 🎉<br/>
+                Un email de confirmation vous a été envoyé.
               </p>
               <div className="card" style={{ padding:"20px", marginBottom:"28px", textAlign:"left", cursor:"default" }}>
                 <div className="sans" style={{ fontSize:"13px", color:"#5a3040", lineHeight:"2" }}>
