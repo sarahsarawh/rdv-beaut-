@@ -2,13 +2,29 @@ import { useState, useEffect } from "react";
 
 const SUPABASE_URL = "https://lysqfkxxegzfjnljhszy.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5c3Fma3h4ZWd6ZmpubGpoc3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MTYxMTIsImV4cCI6MjA5Mzk5MjExMn0.KSpnz_DD_kVB5W9OCDQvJ3RoskMEIEJxXdDXX0ZPJNE";
+const ADMIN_PASSWORD = "Bossboss123";
 
 async function getReservations(date) {
   const res = await fetch(
-    SUPABASE_URL + "/rest/v1/Reservation?date=eq." + date + "&select=heure,duree",
+    SUPABASE_URL + "/rest/v1/Reservation?date=eq." + date + "&select=id,heure,duree",
     { headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY } }
   );
   return await res.json();
+}
+
+async function getAllReservations() {
+  const res = await fetch(
+    SUPABASE_URL + "/rest/v1/Reservation?select=id,date,heure,duree&order=date.asc,heure.asc",
+    { headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY } }
+  );
+  return await res.json();
+}
+
+async function deleteReservation(id) {
+  await fetch(SUPABASE_URL + "/rest/v1/Reservation?id=eq." + id, {
+    method: "DELETE",
+    headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY }
+  });
 }
 
 async function addReservation(date, heure, duree) {
@@ -21,6 +37,20 @@ async function addReservation(date, heure, duree) {
       "Prefer": "return=minimal"
     },
     body: JSON.stringify({ date, heure, duree })
+  });
+}
+
+async function blockDay(date) {
+  // Bloque toute la journee en ajoutant un RDV de 9h a 20h30 (705 min)
+  await fetch(SUPABASE_URL + "/rest/v1/Reservation", {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      "Prefer": "return=minimal"
+    },
+    body: JSON.stringify({ date, heure: "09:00", duree: 705 })
   });
 }
 
@@ -45,8 +75,7 @@ const INFO_REHAUSSE2 = "Durée : 1h15. Venez sans mascara ni produit sur les cil
 
 const services = [
   {
-    category: "Cils",
-    emoji: "🪄",
+    category: "Cils", emoji: "🪄",
     items: [
       { id: "c1", name: "Pose cil à cil", price: "70€", info: INFO_POSE },
       { id: "c2", name: "Remplissage cil à cil", price: "55€", info: INFO_REMPL },
@@ -66,8 +95,7 @@ const services = [
     ],
   },
   {
-    category: "Sourcils",
-    emoji: "✨",
+    category: "Sourcils", emoji: "✨",
     items: [
       { id: "s1", name: "Browlift", price: "50€", info: INFO_BROWLIFT },
       { id: "s2", name: "Browlift + Épilation", price: "65€", info: INFO_BROWLIFT2 },
@@ -77,8 +105,7 @@ const services = [
     ],
   },
   {
-    category: "Rehaussement de cils",
-    emoji: "🌸",
+    category: "Rehaussement de cils", emoji: "🌸",
     items: [
       { id: "r1", name: "Rehaussement", price: "50€", info: INFO_REHAUSSE },
       { id: "r2", name: "Rehaussement + Teinture", price: "65€", info: INFO_REHAUSSE2 },
@@ -135,6 +162,8 @@ const css = `
   .btn-rose:disabled{opacity:0.4;cursor:not-allowed;transform:none}
   .btn-ghost{background:transparent;border:1.5px solid rgba(192,80,110,0.35);color:#c0506e;border-radius:50px;padding:10px 24px;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s}
   .btn-ghost:hover{background:rgba(192,80,110,0.07)}
+  .btn-red{background:linear-gradient(135deg,#e05555,#c03030);color:white;border:none;border-radius:50px;padding:8px 18px;font-family:'Jost',sans-serif;font-size:12px;cursor:pointer;transition:all 0.2s}
+  .btn-red:hover{opacity:0.85}
   .card{background:rgba(255,255,255,0.75);backdrop-filter:blur(12px);border:1px solid rgba(219,112,147,0.15);border-radius:20px;transition:all 0.2s;cursor:pointer}
   .card:hover{border-color:rgba(219,112,147,0.4);box-shadow:0 8px 32px rgba(192,80,110,0.1)}
   .card.selected{border-color:#d4688a!important;background:rgba(255,235,242,0.85)!important;box-shadow:0 6px 24px rgba(192,80,110,0.18)!important}
@@ -155,10 +184,152 @@ const css = `
   textarea.input-field{resize:vertical;min-height:80px}
   .info-box{background:rgba(212,104,138,0.08);border:1px solid rgba(212,104,138,0.25);border-radius:12px;padding:12px 16px;font-family:'Jost',sans-serif;font-size:12px;color:#a06070;line-height:1.6;margin-top:8px;animation:fadeIn 0.2s ease}
   .notice{background:rgba(212,104,138,0.08);border:1px solid rgba(212,104,138,0.2);border-radius:12px;padding:12px 16px;font-family:'Jost',sans-serif;font-size:12px;color:#a06070;text-align:center;line-height:1.6;margin-top:16px}
+  .rdv-card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;border-left:4px solid #d4688a;box-shadow:0 2px 12px rgba(192,80,110,0.08);display:flex;justify-content:space-between;align-items:center}
+  .admin-input{width:100%;padding:14px 18px;background:rgba(255,255,255,0.9);border:2px solid rgba(219,112,147,0.3);border-radius:14px;font-family:'Jost',sans-serif;font-size:16px;color:#2a1520;outline:none;transition:border-color 0.2s;margin-bottom:16px}
+  .admin-input:focus{border-color:#d4688a}
   @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 `;
 
+// ===== PAGE ADMIN =====
+function AdminPage() {
+  const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [error, setError] = useState(false);
+  const [rdvs, setRdvs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [blockDate, setBlockDate] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const login = () => {
+    if (password === ADMIN_PASSWORD) {
+      setLoggedIn(true);
+      setError(false);
+      loadRdvs();
+    } else {
+      setError(true);
+    }
+  };
+
+  const loadRdvs = async () => {
+    setLoading(true);
+    const data = await getAllReservations();
+    setRdvs(Array.isArray(data) ? data : []);
+    setLoading(false);
+  };
+
+  const handleDelete = async (id) => {
+    await deleteReservation(id);
+    setSuccessMsg("Créneau rouvert !");
+    setTimeout(() => setSuccessMsg(""), 2000);
+    loadRdvs();
+  };
+
+  const handleBlockDay = async () => {
+    if (!blockDate) return;
+    await blockDay(blockDate);
+    setSuccessMsg("Journée bloquée !");
+    setTimeout(() => setSuccessMsg(""), 2000);
+    setBlockDate("");
+    loadRdvs();
+  };
+
+  const today = new Date().toISOString().split("T")[0];
+  const rdvsFuturs = rdvs.filter(r => r.date >= today);
+
+  if (!loggedIn) {
+    return (
+      <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'Jost',sans-serif", padding:"24px" }}>
+        <div style={{ background:"white", borderRadius:"24px", padding:"40px", maxWidth:"360px", width:"100%", boxShadow:"0 8px 40px rgba(192,80,110,0.15)", textAlign:"center" }}>
+          <div style={{ fontFamily:"'Nunito',sans-serif", fontWeight:"900", fontSize:"32px", color:"#c9788e", marginBottom:"4px" }}>concept.</div>
+          <div style={{ fontSize:"11px", letterSpacing:"3px", textTransform:"uppercase", color:"#d4a0b0", marginBottom:"32px" }}>espace admin</div>
+          <input
+            className="admin-input"
+            type="password"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && login()}
+          />
+          {error && <p style={{ color:"#e05555", fontSize:"13px", marginBottom:"12px" }}>Mot de passe incorrect</p>}
+          <button className="btn-rose" style={{ width:"100%" }} onClick={login}>Connexion</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ minHeight:"100vh", fontFamily:"'Jost',sans-serif", color:"#2a1520", padding:"24px 16px 40px", maxWidth:"600px", margin:"0 auto" }}>
+      <div style={{ textAlign:"center", marginBottom:"28px" }}>
+        <div style={{ fontFamily:"'Nunito',sans-serif", fontWeight:"900", fontSize:"32px", color:"#c9788e" }}>concept.</div>
+        <div style={{ fontSize:"11px", letterSpacing:"3px", textTransform:"uppercase", color:"#d4a0b0" }}>espace admin</div>
+      </div>
+
+      {successMsg && (
+        <div style={{ background:"#e8f5e9", border:"1px solid #a5d6a7", borderRadius:"12px", padding:"12px 16px", textAlign:"center", color:"#2e7d32", fontSize:"14px", marginBottom:"20px" }}>
+          ✅ {successMsg}
+        </div>
+      )}
+
+      {/* Bloquer une journée */}
+      <div style={{ background:"white", borderRadius:"20px", padding:"20px", marginBottom:"24px", boxShadow:"0 2px 16px rgba(192,80,110,0.08)" }}>
+        <h2 style={{ fontSize:"16px", fontWeight:"600", marginBottom:"16px", color:"#2a1520" }}>🚫 Bloquer une journée</h2>
+        <div style={{ display:"flex", gap:"12px", alignItems:"center" }}>
+          <input
+            type="date"
+            className="admin-input"
+            style={{ marginBottom:"0", flex:1 }}
+            value={blockDate}
+            min={today}
+            onChange={e => setBlockDate(e.target.value)}
+          />
+          <button className="btn-rose" style={{ padding:"14px 20px", whiteSpace:"nowrap" }} onClick={handleBlockDay}>
+            Bloquer
+          </button>
+        </div>
+        <p style={{ fontSize:"11px", color:"#a06070", marginTop:"8px" }}>Bloque toute la journée — congé, vacances, formation...</p>
+      </div>
+
+      {/* Liste des RDV */}
+      <div style={{ background:"white", borderRadius:"20px", padding:"20px", boxShadow:"0 2px 16px rgba(192,80,110,0.08)" }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"16px" }}>
+          <h2 style={{ fontSize:"16px", fontWeight:"600", color:"#2a1520" }}>📋 Réservations à venir</h2>
+          <button className="btn-ghost" style={{ padding:"8px 16px", fontSize:"12px" }} onClick={loadRdvs}>↻ Actualiser</button>
+        </div>
+        {loading ? (
+          <p style={{ textAlign:"center", color:"#a06070", padding:"20px" }}>Chargement...</p>
+        ) : rdvsFuturs.length === 0 ? (
+          <p style={{ textAlign:"center", color:"#a06070", padding:"20px" }}>Aucune réservation à venir</p>
+        ) : (
+          rdvsFuturs.map(rdv => (
+            <div key={rdv.id} className="rdv-card">
+              <div>
+                <div style={{ fontWeight:"600", fontSize:"14px", marginBottom:"4px" }}>
+                  📅 {rdv.date} à {rdv.heure}
+                </div>
+                <div style={{ fontSize:"12px", color:"#a06070" }}>
+                  Durée bloquée : {rdv.duree} min
+                </div>
+              </div>
+              <button className="btn-red" onClick={() => handleDelete(rdv.id)}>
+                Annuler
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+
+      <div style={{ textAlign:"center", marginTop:"24px" }}>
+        <button className="btn-ghost" onClick={() => window.location.href = "/"}>← Retour à l'app</button>
+      </div>
+    </div>
+  );
+}
+
+// ===== APP PRINCIPALE =====
 export default function App() {
+  const isAdmin = window.location.pathname === "/admin";
+  if (isAdmin) return <AdminPage />;
+
   const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
