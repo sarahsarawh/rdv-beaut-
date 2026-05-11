@@ -7,7 +7,7 @@ const ADMIN_PASSWORD = "Bossboss123";
 const EMAILJS_SERVICE_ID = "concept4lashes";
 const EMAILJS_PUBLIC_KEY = "eMaOTwoGjGcKN6krF";
 const EMAILJS_TEMPLATE_CLIENTE = "template_w1ly2z5";
-const EMAILJS_TEMPLATE_ADMIN = "ext7urx";
+const EMAILJS_TEMPLATE_ADMIN = "template_hgvofmq";
 
 async function getReservations(date) {
   const res = await fetch(
