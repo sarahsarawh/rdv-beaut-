@@ -388,6 +388,8 @@ export default function App() {
     const serviceFormate = selectedService
       ? selectedService.name + " — " + selectedService.price
       : "";
+
+    // Email confirmation cliente — try séparé
     try {
       await window.emailjs.send(
         EMAILJS_SERVICE_ID,
@@ -401,6 +403,12 @@ export default function App() {
         },
         EMAILJS_PUBLIC_KEY
       );
+    } catch(e) {
+      console.error("EmailJS cliente error:", e);
+    }
+
+    // Email notification admin — try séparé
+    try {
       await window.emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ADMIN,
@@ -416,8 +424,9 @@ export default function App() {
         EMAILJS_PUBLIC_KEY
       );
     } catch(e) {
-      console.error("EmailJS error:", e);
+      console.error("EmailJS admin error:", e);
     }
+
     setStep(5);
   };
 
