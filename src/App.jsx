@@ -194,7 +194,6 @@ const css = `
   @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 `;
 
-// ===== PAGE ADMIN =====
 function AdminPage() {
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
@@ -327,7 +326,6 @@ function AdminPage() {
   );
 }
 
-// ===== APP PRINCIPALE =====
 export default function App() {
   const isAdmin = window.location.pathname === "/admin";
   if (isAdmin) return <AdminPage />;
@@ -380,7 +378,7 @@ export default function App() {
   };
 
   const handleConfirm = async () => {
-    if (!form.name || !form.phone) return;
+    if (!form.name || !form.phone || !form.email) return;
     if (dateKey && selectedTime) {
       await addReservation(dateKey, selectedTime, dureeService);
     }
@@ -576,7 +574,7 @@ export default function App() {
                   <input className="input-field" placeholder="+33 6 XX XX XX XX" type="tel" value={form.phone} onChange={e => setForm({...form, phone:e.target.value})} />
                 </div>
                 <div>
-                  <label className="sans" style={{ fontSize:"12px", color:"#a06070", display:"block", marginBottom:"6px" }}>Email</label>
+                  <label className="sans" style={{ fontSize:"12px", color:"#a06070", display:"block", marginBottom:"6px" }}>Email *</label>
                   <input className="input-field" placeholder="votre@email.com" type="email" value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
                 </div>
                 <div>
@@ -586,7 +584,7 @@ export default function App() {
               </div>
               <div style={{ display:"flex", justifyContent:"space-between", marginTop:"24px" }}>
                 <button className="btn-ghost" onClick={() => setStep(3)}>Retour</button>
-                <button className="btn-rose" disabled={!form.name || !form.phone} onClick={handleConfirm}>Confirmer le RDV</button>
+                <button className="btn-rose" disabled={!form.name || !form.phone || !form.email} onClick={handleConfirm}>Confirmer le RDV</button>
               </div>
             </div>
           )}
@@ -616,4 +614,4 @@ export default function App() {
       </div>
     </>
   );
-} 
+}
