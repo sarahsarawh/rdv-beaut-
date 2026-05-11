@@ -5,7 +5,7 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const ADMIN_PASSWORD = "Bossboss123";
 
 const EMAILJS_SERVICE_ID = "concept4lashes";
-const EMAILJS_TEMPLATE_ID = "v098x81";
+const EMAILJS_TEMPLATE_ID = "template_w1ly2z5";
 const EMAILJS_PUBLIC_KEY = "eMaOTwoGjGcKN6krF";
 
 async function getReservations(date) {
