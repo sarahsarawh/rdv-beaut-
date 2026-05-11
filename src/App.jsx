@@ -5,8 +5,9 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const ADMIN_PASSWORD = "Bossboss123";
 
 const EMAILJS_SERVICE_ID = "concept4lashes";
-const EMAILJS_TEMPLATE_ID = "template_w1ly2z5";
 const EMAILJS_PUBLIC_KEY = "eMaOTwoGjGcKN6krF";
+const EMAILJS_TEMPLATE_CLIENTE = "template_w1ly2z5";
+const EMAILJS_TEMPLATE_ADMIN = "template_hgvofmq";
 
 async function getReservations(date) {
   const res = await fetch(
@@ -381,18 +382,36 @@ export default function App() {
     if (dateKey && selectedTime) {
       await addReservation(dateKey, selectedTime, dureeService);
     }
+    const dateFormatee = selectedDate
+      ? selectedDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })
+      : "";
+    const serviceFormate = selectedService
+      ? selectedService.name + " — " + selectedService.price
+      : "";
     try {
       await window.emailjs.send(
         EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
+        EMAILJS_TEMPLATE_CLIENTE,
         {
           client_name: form.name,
           client_email: form.email,
-          appointment_date: selectedDate
-            ? selectedDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })
-            : "",
+          appointment_date: dateFormatee,
           appointment_time: selectedTime || "",
-          service: selectedService ? selectedService.name + " — " + selectedService.price : "",
+          service: serviceFormate,
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      await window.emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ADMIN,
+        {
+          client_name: form.name,
+          client_phone: form.phone,
+          client_email: form.email,
+          appointment_date: dateFormatee,
+          appointment_time: selectedTime || "",
+          service: serviceFormate,
+          note: form.note || "—",
         },
         EMAILJS_PUBLIC_KEY
       );
