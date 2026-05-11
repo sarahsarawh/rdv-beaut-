@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import emailjs from "@emailjs/browser";
 
 const SUPABASE_URL = "https://lysqfkxxegzfjnljhszy.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5c3Fma3h4ZWd6ZmpubGpoc3p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MTYxMTIsImV4cCI6MjA5Mzk5MjExMn0.KSpnz_DD_kVB5W9OCDQvJ3RoskMEIEJxXdDXX0ZPJNE";
@@ -383,7 +382,7 @@ export default function App() {
       await addReservation(dateKey, selectedTime, dureeService);
     }
     try {
-      await emailjs.send(
+      await window.emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         {
