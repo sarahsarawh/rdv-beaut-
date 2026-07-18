@@ -397,9 +397,22 @@
     color: var(--rose-dark);
   }
 
+.student-banner { position: relative; overflow: hidden; background: #D4878D; color: #FDF0F1; padding: 8px 0; white-space: nowrap; }
+.student-banner-track { display: inline-block; padding-left: 100%; animation: student-banner-scroll 22s linear infinite; font-size: 13px; letter-spacing: 0.03em; font-weight: 600; }
+.student-banner-track span { margin-right: 60px; }
+@keyframes student-banner-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 </style>
 </head>
 <body>
+
+<!-- BANDEAU ÉTUDIANT -->
+<div class="student-banner">
+  <div class="student-banner-track">
+    <span>🎓 -10% pour les étudiants sur présentation d'un justificatif</span>
+    <span>🎓 -10% pour les étudiants sur présentation d'un justificatif</span>
+    <span>🎓 -10% pour les étudiants sur présentation d'un justificatif</span>
+  </div>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -454,9 +467,9 @@
     <h2 class="heading">Les <em>prestations</em></h2>
     <div class="presta-cat">
       <div class="cat-title">Extensions de Cils</div>
-      <div class="presta-row"><div><span class="presta-name">Sur mesure — Manga / Wispy</span></div><span class="presta-price">100€</span></div>
+      <div class="presta-row"><div><span class="presta-name">Wispy / Manga Lashes</span><span class="presta-sub">Remplissage 2 sem. max — 70€</span></div><span class="presta-price">90€</span></div>
       <div class="presta-row"><div><span class="presta-name">Mega Volume Russe 5D+</span><span class="presta-sub">Remplissage 2-3 sem. — 75€</span></div><span class="presta-price">90€</span></div>
-      <div class="presta-row"><div><span class="presta-name">Volume Russe 3D/4D</span><span class="presta-sub">Remplissage 2-3 sem. — 75€</span></div><span class="presta-price">90€</span></div>
+      <div class="presta-row"><div><span class="presta-name">Volume Russe 3D/4D</span><span class="presta-sub">Remplissage 2-3 sem. — 75€</span></div><span class="presta-price">80€</span></div>
       <div class="presta-row"><div><span class="presta-name">Mix (Cil à cil + Bouquets)</span><span class="presta-sub">Remplissage 2-3 sem. — 65€</span></div><span class="presta-price">80€</span></div>
       <div class="presta-row"><div><span class="presta-name">Volume 2D</span><span class="presta-sub">Remplissage 2-3 sem. — 55€</span></div><span class="presta-price">70€</span></div>
       <div class="presta-row"><div><span class="presta-name">Cil à Cil</span><span class="presta-sub">Remplissage 2-3 sem. — 55€</span></div><span class="presta-price">70€</span></div>
@@ -489,7 +502,7 @@
     <h2 class="heading">Les <em>packs</em></h2>
     <div class="packs-grid">
       <div class="pack-card featured">
-        <span class="pack-badge gold">🔥 Offre Juin</span>
+        <span class="pack-badge gold">🔥 Offre permanente</span>
         <div class="pack-name">Pack Rehaussement ×5</div>
         <div class="pack-desc">5 séances à 35€ au lieu de 50€. Économisez 75€ !</div>
         <div class="pack-price">175€</div>
