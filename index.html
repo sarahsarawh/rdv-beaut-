@@ -401,6 +401,16 @@
 .student-banner-track { display: inline-block; padding-left: 100%; animation: student-banner-scroll 22s linear infinite; font-size: 13px; letter-spacing: 0.03em; font-weight: 600; }
 .student-banner-track span { margin-right: 60px; }
 @keyframes student-banner-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+.cgv-link { cursor: pointer; }
+.cgv-modal { display: none; position: fixed; inset: 0; background: rgba(62,39,35,0.55); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
+.cgv-modal.open { display: flex; }
+.cgv-modal-inner { background: var(--white); max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; border-radius: 12px; padding: 36px 28px 28px; position: relative; }
+.cgv-modal-inner h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--brown-text); margin-bottom: 6px; }
+.cgv-modal-inner .cgv-updated { font-size: 12px; color: var(--brown-light); margin-bottom: 18px; }
+.cgv-modal-inner h3 { font-size: 15px; color: var(--rose-dark); margin-top: 22px; margin-bottom: 6px; }
+.cgv-modal-inner p, .cgv-modal-inner li { font-size: 13px; line-height: 1.65; color: var(--brown-text); }
+.cgv-modal-inner ul { margin: 6px 0 6px 18px; }
+.cgv-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 26px; line-height: 1; cursor: pointer; color: var(--brown-text); }
 </style>
 </head>
 <body>
@@ -599,9 +609,69 @@
     <a href="https://www.instagram.com/concept4lashes?igsh=ZnR1dHVmcTM1dzJv" target="_blank">Instagram</a>
     <a href="https://www.fresha.com/p/sarah-seignol-6450118?share=true&pId=3000864" target="_blank">Réserver</a>
     <a href="https://maps.google.com/?q=2+Rue+du+Saleve+74100+Annemasse" target="_blank">Itinéraire</a>
+    <a class="cgv-link" onclick="document.getElementById('cgvModal').classList.add('open'); return false;" href="#">CGV</a>
   </div>
   <p>© 2026 Concept4lashes — Institut Beauté du Regard, Annemasse</p>
 </footer>
+
+<!-- CGV MODAL -->
+<div class="cgv-modal" id="cgvModal">
+  <div class="cgv-modal-inner">
+    <button class="cgv-close" onclick="document.getElementById('cgvModal').classList.remove('open')">&times;</button>
+    <h2>Conditions Générales de Vente</h2>
+    <p class="cgv-updated">Dernière mise à jour : 8 août 2026</p>
+
+    <h3>Article 1 – Identification du prestataire</h3>
+    <p>Concept4lashes est un institut d'esthétique exploité par Sarah Seignol, micro-entrepreneur.</p>
+    <ul>
+      <li>Adresse : 2 Rue du Salève, 74100 Annemasse</li>
+      <li>SIRET : 992 682 401 00011</li>
+      <li>Email : Concept4lashes@gmail.com</li>
+      <li>Statut : Micro-entrepreneur – TVA non applicable, article 293 B du CGI</li>
+    </ul>
+
+    <h3>Article 2 – Prestations proposées</h3>
+    <p>Concept4lashes propose des prestations de soins esthétiques, notamment :</p>
+    <ul>
+      <li>Extensions de cils (pose, remplissage)</li>
+      <li>Lash lift (rehaussement de cils)</li>
+      <li>Soins des sourcils (brow lift, lamination)</li>
+    </ul>
+    <p>Les descriptions et tarifs de chaque prestation sont disponibles sur le site internet et lors de la prise de rendez-vous.</p>
+
+    <h3>Article 3 – Prix</h3>
+    <p>Les prix sont indiqués en euros, toutes taxes comprises (TTC). La mention « TVA non applicable, article 293 B du CGI » s'applique conformément au statut de micro-entrepreneur du prestataire.</p>
+    <p>Les tarifs peuvent être modifiés à tout moment, mais la prestation sera facturée sur la base du tarif en vigueur au moment de la réservation.</p>
+
+    <h3>Article 4 – Réservation et paiement</h3>
+    <p>Les rendez-vous peuvent être pris en ligne via la plateforme de réservation (Fresha) ou par téléphone.</p>
+    <p>Le règlement s'effectue à l'issue de la prestation, en espèces, par carte bancaire ou tout autre moyen proposé en institut, sauf mention contraire lors de la prise de rendez-vous (acompte éventuel).</p>
+
+    <h3>Article 5 – Annulation et report</h3>
+    <p>Toute annulation ou report de rendez-vous doit être signalé au moins 24 heures à l'avance.</p>
+    <p>En cas d'annulation tardive (moins de 24h) ou d'absence non signalée, l'institut se réserve le droit de facturer tout ou partie de la prestation prévue, ou de demander un acompte pour les prochaines réservations.</p>
+
+    <h3>Article 6 – Contre-indications et responsabilité de la cliente</h3>
+    <p>La cliente s'engage à informer le prestataire de toute allergie, sensibilité cutanée, pathologie ou traitement médical pouvant interférer avec la prestation.</p>
+    <p>Un test de sensibilité (patch test) peut être proposé avant certaines prestations, notamment pour une première pose d'extensions de cils.</p>
+    <p>Le prestataire ne saurait être tenu responsable des réactions liées à une information incomplète ou erronée communiquée par la cliente.</p>
+
+    <h3>Article 7 – Droit de rétractation</h3>
+    <p>Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux prestations de services pleinement exécutées avant la fin du délai de rétractation, avec l'accord préalable exprès de la cliente.</p>
+
+    <h3>Article 8 – Médiation de la consommation</h3>
+    <p>Conformément aux articles L616-1 et R616-1 du Code de la consommation, en cas de litige non résolu directement avec le prestataire, la cliente peut recourir gratuitement au service de médiation suivant : Médiation Consommation Développement (MED CONSO DEV) – Site internet : <a href="https://www.medconsodev.eu" target="_blank">www.medconsodev.eu</a></p>
+
+    <h3>Article 9 – Données personnelles</h3>
+    <p>Les données personnelles collectées (nom, coordonnées, informations liées aux rendez-vous) sont utilisées exclusivement dans le cadre de la gestion de la relation client et ne sont pas transmises à des tiers, sauf obligation légale.</p>
+    <p>Conformément au RGPD, la cliente dispose d'un droit d'accès, de rectification et de suppression de ses données, en écrivant à : Concept4lashes@gmail.com</p>
+
+    <h3>Article 10 – Litiges</h3>
+    <p>En cas de litige, et à défaut de résolution amiable ou via le médiateur mentionné à l'article 8, les tribunaux compétents seront ceux du ressort du siège de l'entreprise.</p>
+
+    <p style="margin-top:20px;"><em>Concept4lashes – 2 Rue du Salève, 74100 Annemasse</em></p>
+  </div>
+</div>
 
 <!-- STICKY BAR -->
 <div class="sticky-bar" id="stickyBar">
@@ -638,6 +708,11 @@
   // ── STICKY BAR ──
   const bar = document.getElementById('stickyBar');
   window.addEventListener('scroll', () => { bar.classList.toggle('visible', window.scrollY > 300); });
+
+  // ── CGV MODAL ──
+  const cgvModal = document.getElementById('cgvModal');
+  cgvModal.addEventListener('click', (e) => { if (e.target === cgvModal) cgvModal.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cgvModal.classList.remove('open'); });
 </script>
 </body>
 </html>
